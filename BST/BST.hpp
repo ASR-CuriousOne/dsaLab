@@ -368,7 +368,7 @@ public:
 
     std::stack<std::pair<Node<T>*, int>> dfs;
     Node<T>* curr = root;
-    int depth = 0;
+    int depth = 1;
 
     while(curr != nullptr || !dfs.empty()){
       while(curr != nullptr){
@@ -553,6 +553,74 @@ public:
     }
 
     std::cout << std::endl;
+  }
+
+  void deSerializePreOrder(std::string input){
+    if(input.empty()){
+      std::cerr << "Invalid Input" << std::endl;
+      return;
+    }
+
+    std::stack<Node<T>**> s;
+    s.push(&root);
+    size_t pos = 0;
+
+    while(!s.empty()){
+      Node<T>** nodePtr = s.top();
+      s.pop();
+
+      if(pos >= input.size()){
+        std::cerr << "Invalid Input" << std::endl;
+        return;
+      }
+
+      if(input[pos] == '#'){
+        *nodePtr = nullptr;
+        pos += 2; 
+        continue;
+      }
+
+      size_t nextComma = input.find(',', pos);
+      if(nextComma == std::string::npos){
+        std::cerr << "Invalid Input" << std::endl;
+        return;
+      }
+
+      T value = static_cast<T>(std::stoi(input.substr(pos, nextComma - pos)));
+      *nodePtr = new Node<T>(value);
+      pos = nextComma + 1;
+
+      s.push(&((*nodePtr)->right));
+      s.push(&((*nodePtr)->left));
+    }
+    
+  }
+
+  int calculateNumOfLeafNodes(){
+    if(root == nullptr){
+      return 0;
+    }
+
+    int leafCount = 0;
+    std::stack<Node<T>*> s;
+    s.push(root);
+
+    while(!s.empty()){
+      Node<T>* temp = s.top();
+      s.pop();
+
+      if(temp->left == nullptr && temp->right == nullptr){
+        leafCount++;
+      }
+      if(temp->left != nullptr){
+        s.push(temp->left);
+      }
+      if(temp->right != nullptr){
+        s.push(temp->right);
+      }
+    }
+
+    return leafCount;
   }
 
   ~BST() {

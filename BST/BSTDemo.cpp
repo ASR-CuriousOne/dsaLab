@@ -15,7 +15,7 @@ int main(){
 	bst.print(ASR::Order::PostOrder);
 	bst.print(ASR::Order::LevelOrder);
 	bst.serializePreOrder();
-
+	
 	bst.printDepths();
 	bst.printHeights();
 
@@ -42,6 +42,13 @@ int main(){
 	bst.print(ASR::Order::InOrder);
 	bst.print(ASR::Order::LevelOrder);
 
+	bst.deleteTree();
+
+	bst.deSerializePreOrder("1,2,#,#,3,4,#,#,5,#,#");
+
+	bst.print(ASR::Order::InOrder);
+	bst.print(ASR::Order::LevelOrder);	
+	bst.print(ASR::Order::PreOrder);
 	
 	
 }

@@ -138,6 +138,17 @@ void mergeSort(std::vector<int>& a){
 	merge(a, l, m, r);
 }
 
+void mergeIterative(std::vector<int>& a){
+	int N = a.size();
+	for(int currSize = 1; currSize <= N - 1; currSize = 2 * currSize){
+		for(int leftStart = 0; leftStart < N - 1; leftStart += 2 * currSize){
+			int mid = std::min(leftStart + currSize - 1, N - 1);
+			int rightEnd = std::min(leftStart + 2 * currSize - 1, N - 1);
+			merge(a, leftStart, mid, rightEnd);
+		}
+	}
+}
+
 void heapify(std::vector<int>& a, int N, int i){
 	int largest = i, l = 2*i + 1, r = 2*i + 2;
 	if(l < N && a[l] > a[largest]) largest = l;
@@ -157,7 +168,17 @@ void heapSort(std::vector<int>& a){
 	}
 }
 
-
+void heapSortPrint(std::vector<int>& a){
+	int N = a.size();
+	for(int i = N / 2 - 1; i >= 0; i--) heapify(a, N, i);
+	for(int i = N - 1; i > 0; i--){
+		std::swap(a[0], a[i]);
+		heapify(a, i, 0);
+		for(auto x : a) std::cout << x << ' ';
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+}
 bool checkIsSorted(std::vector<int>& a){
 
 	for(int i = 0; i < a.size()-1; i++){
@@ -225,6 +246,24 @@ int main(){
 	RUN_SORT_BENCHMARK(insertionSort);
 	RUN_SORT_BENCHMARK(quickSort);
 	RUN_SORT_BENCHMARK(mergeSort);
+	RUN_SORT_BENCHMARK(mergeIterative);
+	RUN_SORT_BENCHMARK(heapSort)
+
+	std::cout << "Heap Sort with intermediate prints" << std::endl;
+	RUN_SORT_BENCHMARK(quickSort);
+	RUN_SORT_BENCHMARK(heapSort);
+
+	std::cout << "Heap Sort with prints" << std::endl;
+
+	std::vector<int> b = {35, 50, 40, 26, 30, 60, 78, 20, 28};
+
+	std::cout << std::endl;
+	printVector(b);
+	mergeSort(b); 
+
+	printVector(b);
+
+	//RUN_SORT_BENCHMARK(heapSortPrint);
 		
 
 
